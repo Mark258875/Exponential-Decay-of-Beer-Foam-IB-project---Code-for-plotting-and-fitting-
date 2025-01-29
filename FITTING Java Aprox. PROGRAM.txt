@@ -1,0 +1,98 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
+
+public class EXP_DECAY_FITtheLINE {
+    public static void main(String[]args){
+        try{
+
+            float[][] array = readInput("./input/beer3.csv");
+
+            System.out.println(Arrays.toString(ReturnPar(array, -0.009, 2.6))); //TO ZNAMENA ZE JE ROVNAKE S PYTHON SCRIPTOM
+
+            double lowestSquare = Double.MAX_VALUE;
+            double[] row = {234.2, 234324.2, 234234.2, 23432.2};
+
+
+            for (double i = 0; i>-1; i-= 0.0000001){
+                for (double k = 2.6; k<3; k+=0.001) {
+                    double [] pol = ReturnPar(array, i, k);
+
+
+
+
+                    if(pol[1]<lowestSquare){
+                        lowestSquare=pol[1];
+
+                        row[0] = pol[0];
+                        row[1] = pol[1];
+                        row[2] = i;
+                        row[3] = k;
+
+                    }
+
+                }
+            }
+
+
+            FileWriter fw = new FileWriter("./input/beer3_table.csv");
+
+            fw.write("linearny coef. , const. coef , distance fitted real points, sum of Squares \n");
+            fw.write(row[2] + "," + row[3] +","+ row[0] + "," + row[1]);
+
+            fw.close();
+
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    static float[][] readInput(String input) throws IOException {
+        FileReader fr = new FileReader(input);
+        BufferedReader br = new BufferedReader(fr);
+
+        String line;
+        int count = 0;
+        while((line = br.readLine())!=null){
+            count++;
+        }
+
+        br.close();
+        fr.close();
+
+        fr = new FileReader(input);
+        br = new BufferedReader(fr);
+
+        float[][] pole = new float[count][2];
+        count = 0;
+
+        while((line=br.readLine())!=null){
+            String [] line1 = line.split(",");
+            pole[count][0] = Float.parseFloat(line1[0]);
+            pole[count][1] = Float.parseFloat(line1[1]);
+
+            count++;
+        }
+
+        System.out.println(Arrays.deepToString(pole));
+        return pole;
+    }
+
+    static double[] ReturnPar(float[][] pole, double a, double b){
+        //function y = ax + b
+
+        double distanceDIF;
+        double sumDistanceDif = 0;
+        double sumSquares = 0;
+
+        for (float[] floats : pole) {
+            distanceDIF = Math.abs((floats[0] * a + b) - Math.log(floats[1]));
+            sumDistanceDif += distanceDIF;
+            sumSquares += distanceDIF * distanceDIF;
+        }
+
+        return new double[]{sumDistanceDif, sumSquares};
+    }
+}
