@@ -20,4 +20,8 @@
 
   `python scaledLNY.py -f beer1.csv`
   `python scaledLNY.py -f beer1.csv -l "ax+b"`  Option to fit the linear function + show statistics 
+
+### Java Program 
+  Used for fidning the best approximation based on data. 
+  ! The boundaries must be adjusted manually
   
