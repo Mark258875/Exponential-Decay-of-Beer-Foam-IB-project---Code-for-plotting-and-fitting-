@@ -56,7 +56,7 @@ def plot_points(file_path, line_function=None):
                 continue
 
     # Plot the Points
-    plt.scatter(x_points, y_points, color='red', label='Foam Data - Brand 3')
+    plt.scatter(x_points, y_points, color='blue', label='Foam Data - Brand 1')
 
     if line_expr:
         # Generate x values for the line
